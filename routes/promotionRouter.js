@@ -9,10 +9,10 @@ promotionRouter.use(bodyParser.json());
 promotionRouter.route('/')
 .get((req, res, next) => {
     Promotion.find()
-    .then(promotions => {
+    .then(promotion => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(promotions);
+        res.json(promotion);
     })
     .catch(err => next(err));
 })
@@ -37,8 +37,10 @@ promotionRouter.route('/')
         res.setHeader('Content-Type', 'application/json');
         res.json(response);
     })
-    .catch(err => next(err));
+    .catch(err => next(err))
 });
+
+//Promotion Endpoints with ID's
 
 promotionRouter.route('/:promotionId')
 .get((req, res, next) => {
@@ -48,14 +50,14 @@ promotionRouter.route('/:promotionId')
         res.setHeader('Content-Type', 'application/json');
         res.json(promotion);
     })
-    .catch(err => next(err));
+    .catch(err => next(err))
 })
 .post((req, res) => {
     res.statusCode = 403;
     res.end(`POST operation not supported on /promotions/${req.params.promotionId}`);
 })
 .put((req, res, next) => {
-    Promotion.findByIdAndUpdate(req.params.promotionId, {$set: req.body}, { new: true })
+    Promotion.findByIdAndUpdate(req.params.promotionId, { $set: req.body }, { new: true })
     .then(promotion => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -71,7 +73,6 @@ promotionRouter.route('/:promotionId')
         res.json(response);
     })
     .catch(err => next(err));
-})
-
+});
 
 module.exports = promotionRouter;

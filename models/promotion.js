@@ -15,7 +15,7 @@ const promotionSchema = new Schema({
         required: true
     },
     featured: {
-        type: String
+        type: Boolean
     },
     cost: {
         type: Currency,
@@ -25,7 +25,7 @@ const promotionSchema = new Schema({
         type: String,
         required: true
     }
-},  {
+}, {
     timestamps: true
 });
 

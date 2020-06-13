@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Partner = require('../models/partner');
+
 const partnerRouter = express.Router();
 
 partnerRouter.use(bodyParser.json());
@@ -8,12 +9,12 @@ partnerRouter.use(bodyParser.json());
 partnerRouter.route('/')
 .get((req, res, next) => {
     Partner.find()
-    .then(partners => {
+    .then(partner => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(partners);
+        res.json(partner);
     })
-    .catch(err => next(err));
+    .catch(err => next(err))
 })
 .post((req, res, next) => {
     Partner.create(req.body)
@@ -23,7 +24,7 @@ partnerRouter.route('/')
         res.setHeader('Content-Type', 'application/json');
         res.json(partner);
     })
-    .catch(err => next(err));
+    .catch(err => next(err))
 })
 .put((req, res) => {
     res.statusCode = 403;
@@ -31,16 +32,18 @@ partnerRouter.route('/')
 })
 .delete((req, res, next) => {
     Partner.deleteMany()
-    .then(response => {
+    .then(partner => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(response);
+        res.json(partner);
     })
     .catch(err => next(err));
 });
 
+//Partner endpoints with ID's
+
 partnerRouter.route('/:partnerId')
-.get((req, res, next) => {
+.get((req, res, next ) => {
     Partner.findById(req.params.partnerId)
     .then(partner => {
         res.statusCode = 200;
@@ -54,7 +57,7 @@ partnerRouter.route('/:partnerId')
     res.end(`POST operation not supported on /partners/${req.params.partnerId}`);
 })
 .put((req, res, next) => {
-    Partner.findByIdAndUpdate(req.params.partnerId, { $set: req.body }, { new: true })
+    Partner.findByIdAndUpdate(req.params.partnerId, { $set: req.body}, { new: true})
     .then(partner => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -69,8 +72,7 @@ partnerRouter.route('/:partnerId')
         res.setHeader('Content-Type', 'application/json');
         res.json(response);
     })
-    .catch(err => next(err));
+    .catch(err => next(err))
 });
-
 
 module.exports = partnerRouter;
